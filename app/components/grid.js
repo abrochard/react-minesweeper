@@ -9,15 +9,16 @@ class Grid extends Component {
 
     this.x = props.x;
     this.y = props.y;
-    this.bombs = props.bombs;
+    this.bombCount = props.bombs;
     this.correctFlags = 0;
+    this.flagCount = 0;
 
     var overlay = '';
     var cells = [];
 
     // get the generator ready
     var totalCells = this.x * this.y;
-    var generator = new RandomGenerator(totalCells, this.bombs);
+    var generator = new RandomGenerator(totalCells, this.bombCount);
 
     // setup the cells
     for (var i = 0; i < this.x; i++) {
@@ -93,16 +94,22 @@ class Grid extends Component {
         // flag or unflag
         cell.flagged = !cell.flagged;
 
+        if (cell.flagged) {
+          this.flagCount++;
+        } else {
+          this.flagCount--;
+        }
+
         if (cell.bomb && cell.flagged) {
           // this is a step in the right direction
           this.correctFlags++;
-
-          if (this.correctFlags == this.bombs) {
-            this.setState({overlay: 'You Win'});
-          }
         } else if (cell.bomb && !cell.flagged) {
           // this is a step backward
           this.correctFlags--;
+        }
+
+        if (this.correctFlags == this.bombCount && this.flagCount == this.bombCount) {
+          this.setState({overlay: 'You Win'});
         }
 
         return cell;
@@ -113,6 +120,7 @@ class Grid extends Component {
   setCount(i, j, count) {
     this.updateCell(i, j, cell => {
       cell.count = count;
+      cell.clicked = true;
       return cell;
     });
   }

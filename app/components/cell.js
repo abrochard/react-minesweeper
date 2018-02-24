@@ -17,7 +17,7 @@ class Cell extends Component {
   }
 
   onClick() {
-    if (this.props.clicked) {
+    if (this.props.clicked || this.props.flagged) {
     // can't click again
       return;
     }
@@ -27,6 +27,10 @@ class Cell extends Component {
 
   onRightClick(e) {
     e.preventDefault();
+    if (this.props.clicked) {
+      // can't flag if clicked
+      return;
+    }
 
     this.flag();
   }
