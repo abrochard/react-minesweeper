@@ -5,9 +5,9 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.x = 20;
-    this.y = 20;
-    this.bombs = 10;
+    this.x = 16;
+    this.y = 30;
+    this.bombs = 99;
 
     this.state = {};
   }
